@@ -1,0 +1,13 @@
+{
+  "name": "test_docker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Justin Barry",
+  "license": "MIT",
+  "scripts": {
+    "start": "nightwatch index.js"
+  },
+  "devDependencies": {
+    "nightwatch": "^0.9.20"
+  }
+}

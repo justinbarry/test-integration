@@ -1,0 +1,39 @@
+version: "3.2"
+services:
+  geth:
+    image: augurproject/dev-pop-geth:latest
+    ports:
+      - "8545:8545"
+      - "8546:8546"
+
+  node:
+    build: ./augur-node
+    ports:
+      - "9001:9001"
+    environment:
+      - ETHEREUM_HTTP=http://geth:8545
+      - ETHEREUM_WS=ws://geth:8546
+    depends_on:
+      - geth
+
+    entrypoint: ["/app/wait-for-it.sh", "geth:8545", "--", "/app/docker-entrypoint.sh"]
+
+  ui:
+    build: ./augur
+    environment:
+      - RUN_LOCAL_ONLY=true
+    ports:
+      - "8080:80"
+
+    depends_on:
+      - node
+      - geth
+
+  browser:
+    image: selenium/standalone-chrome
+    ports:
+      - "4444:4444"
+    volumes:
+      - /dev/shm:/dev/shm
+
+
